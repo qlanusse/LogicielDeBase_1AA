@@ -39,44 +39,50 @@ void place_curseur(uint32_t lig, uint32_t col) {
 */
 
 void traite_car(char c) {
-    if(pos_x == 80) {
-        if(pos_y == 24) {
+    if(pos_x == CGA_CST_COLS) {
+        if(pos_y == CGA_CST_ROWS-1) {
             defilement();
-            place_curseur(24, 0);
+            place_curseur(CGA_CST_ROWS-1, 0);
         } else {
             pos_x--;
             traite_car('\n');
         }
     }
 
-    if ( (c < 127) && (c > 31)) {
-        ecrit_car(pos_y, pos_x, c, 15, 0);
-        pos_x++;
-    } else {
-        if(c == 8) {
+    switch(c){
+        case '\b':
             if (pos_x > 0) {
                 pos_x--;
             }
-        } else if (c == 9) {
+            break;
+        case '\t':
             pos_x++;
             while(pos_x%8 != 0){
                 pos_x++;
             }
-            if (pos_x >= 80){
-                pos_x = 79;
+            if (pos_x >= CGA_CST_COLS){
+                pos_x = CGA_CST_COLS-1;
             }
-        } else if (c == 10) {
-            if (pos_y < NB_LIG){
+            break;
+        case '\n':
+            if (pos_y < CGA_CST_ROWS){
                 pos_y++;
             }
             pos_x = 0;
-        } else if (c == 12) {
+            break;
+        case '\f':
             efface_ecran();
             pos_y = 0;
             pos_x = 0;
-        } else if (c == 13) {
+            break;
+        case '\r':
             pos_x = 0;
-        }
+            break;
+        default:
+            if ( (c < 127) && (c > 31)) {
+                ecrit_car(pos_y, pos_x, c, CGA_COLOR_WHITE, CGA_COLOR_BLACK);
+                pos_x++;
+            } 
     }
     place_curseur(pos_y, pos_x);
 }
