@@ -26,13 +26,15 @@ void kernel_start(void)
 {
     efface_ecran();
     // initialisations
-    //demasq_irq(0);
-    //init_traitant_IT32(traitant_IT_32);
+    demasq_irq(0);
+    init_traitant_IT32(traitant_IT_32);
 
+    /*
     printf("J'aime les licornes\n");
     for (int i = 0 ; i < (25*80)+200 ; i++){
         printf("%d ", i);
     }
+    */
 
     set_frequency(50);
     // démasquage des interruptions externes
