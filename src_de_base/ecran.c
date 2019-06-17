@@ -65,8 +65,10 @@ void traite_car(char c) {
             }
             break;
         case '\n':
-            if (pos_y < CGA_CST_ROWS){
+            if (pos_y < CGA_CST_ROWS -1){
                 pos_y++;
+            } else {
+                defilement();
             }
             pos_x = 0;
             break;
